@@ -1,0 +1,6 @@
+@CA2_Nicolai_de_Groot_HostAddress = http://localhost:5237
+
+GET {{CA2_Nicolai_de_Groot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
