@@ -16,17 +16,31 @@
         <div class="projects">
             @foreach (var ev in Model.Venue.Events)
             {
-                <div class="project">
-                    <h3>@ev.Title</h3>
-                    <p>@ev.Description</p>
-                    <p>
-                        <strong>Date:</strong> @ev.StartTime.ToString("dd/MM/yyyy HH:mm")
-                        <br />
-                        <strong>Price:</strong> €@ev.BasePrice
-                    </p>
-                </div>
+                <a href="/EventDetails/@ev.Id" class="project-link">
+                    <div class="project">
+                        <h3>@ev.Title</h3>
+                        <p>@ev.Description</p>
+                        <p>
+                            <strong>Date:</strong>
+                            @ev.StartTime.ToString("dd/MM/yyyy HH:mm")
+                        </p>
+                    </div>
+                </a>
             }
         </div>
 
     </div>
 </main>
+
+<style>
+    .project-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .project-link:hover {
+        cursor: pointer;
+        border: 1px solid #f69730;
+    }
+</style>

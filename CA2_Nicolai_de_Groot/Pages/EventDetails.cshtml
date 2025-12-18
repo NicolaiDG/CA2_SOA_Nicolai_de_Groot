@@ -1,0 +1,68 @@
+﻿@page "/EventDetails/{id:int}"
+@model CA2_Nicolai_de_Groot.Pages.EventDetailsModel
+
+@{
+    ViewData["Title"] = "Event details";
+}
+
+<main class="content-wrapper">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>@Model.Event.Title</h2>
+            <span>@Model.Event.Description</span>
+            <p><strong>Venue:</strong> @Model.Event.VenueName</p>
+        </div>
+
+        <div class="event-details-grid">
+
+            <div class="project">
+                <strong>Start time:</strong>
+                @Model.Event.StartTime.ToString("dd/MM/yyyy HH:mm")<br />
+                <strong>End time:</strong>
+                @Model.Event.EndTime.ToString("dd/MM/yyyy HH:mm")<br />
+                <strong>Base price:</strong>
+                €@Model.Event.BasePrice<br />
+
+                <p>Favorite</p>
+
+                <h3>Description</h3>
+
+                @foreach (var paragraph in Model.Event.EventDescription
+                .Split("\n\n", StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <p>@paragraph</p>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<style>
+    .event-details-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+        align-items: stretch;
+        margin-top: 30px;
+        margin-bottom: 5rem;
+    }
+
+    .project {
+        background: #ffffff;
+        padding: 35px;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .project h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+
+</style>

@@ -1,28 +1,39 @@
 ﻿@page "/Events"
 @model CA2_Nicolai_de_Groot.Pages.EventsModel
 
-@{
-    ViewData["Title"] = "Event Displayer : Events";
-}
-
 <main class="content-wrapper">
     <div class="container">
 
         <div class="section-header">
             <h2>All Events</h2>
-            <span>text...</span>
+            <span>Browse all available events</span>
         </div>
 
         <div class="projects">
             @foreach (var ev in Model.Events)
             {
-                <div class="project">
-                    <h3>@ev.Title</h3>
-                    <p>@ev.Description</p>
-                    <p><strong>Venue:</strong> @ev.VenueName</p>
-                </div>
+                <a href="/EventDetails/@ev.Id" class="project-link">
+                    <div class="project">
+                        <h3>@ev.Title</h3>
+                        <p>@ev.Description</p>
+                        <p><strong>Venue:</strong> @ev.VenueName</p>
+                    </div>
+                </a>
             }
         </div>
 
     </div>
 </main>
+
+<style>
+    .project-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .project-link:hover {
+            cursor: pointer;
+            border: 1px solid #f69730;
+        }
+</style>

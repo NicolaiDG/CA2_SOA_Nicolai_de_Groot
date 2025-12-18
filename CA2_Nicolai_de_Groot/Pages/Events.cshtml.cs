@@ -19,10 +19,8 @@ namespace CA2_Nicolai_de_Groot.Pages
         public async Task OnGetAsync()
         {
             var client = _httpClientFactory.CreateClient();
-
             var events = await client.GetFromJsonAsync<List<Event>>(
                 "https://localhost:7119/api/Events");
-
             var venues = await client.GetFromJsonAsync<List<Venue>>(
                 "https://localhost:7119/api/Venues");
 
@@ -31,6 +29,7 @@ namespace CA2_Nicolai_de_Groot.Pages
 
             Events = events.Select(e => new EventViewModel
             {
+                Id = e.Id,
                 Title = e.Title,
                 Description = e.Description,
                 VenueName = venues.First(v => v.Id == e.VenueId).Name
