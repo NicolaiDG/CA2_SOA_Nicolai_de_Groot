@@ -14,10 +14,14 @@
         </div>
 
         <div class="projects">
-            <div class="project">
-                <h3>Venue One</h3>
-                <p>Description of venue one.</p>
-            </div>
+            @foreach (var venue in Model.Venues)
+            {
+                <div class="project">
+                    <h3>@venue.Name</h3>
+                    <p><strong>Address:</strong> @venue.Address</p>
+                    <p><strong>Events:</strong> @venue.Events.Count</p>
+                </div>
+            }
         </div>
 
     </div>
