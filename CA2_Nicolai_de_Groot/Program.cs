@@ -51,6 +51,7 @@ namespace CA2_Nicolai_de_Groot
 
             // Frontend
             app.MapRazorPages();
+            app.UseStaticFiles();
 
 
             app.Run();
