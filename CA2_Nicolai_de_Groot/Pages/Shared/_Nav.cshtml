@@ -1,0 +1,27 @@
+﻿@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<header class="events-header">
+    <div class="top-header">
+        <div class="logo">
+            <h1><em>Event</em> Displayer</h1>
+        </div>
+    </div>
+
+    <div class="main-header">
+        <ul class="menu">
+            <li class="@(currentPage == "/Home" ? "active" : "")">
+                <a href="/">Home</a>
+            </li>
+
+            <li class="@(currentPage == "/Venues" ? "active" : "")">
+                <a href="/Venues">Venues</a>
+            </li>
+
+            <li class="@(currentPage == "/Events" ? "active" : "")">
+                <a href="/Events">Events</a>
+            </li>
+        </ul>
+    </div>
+</header>

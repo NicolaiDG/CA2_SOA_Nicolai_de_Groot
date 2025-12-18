@@ -75,3 +75,13 @@
     padding: 20px;
     border: 1px solid #ddd;
 }
+
+.menu li.active a {
+    color: #f69730;
+    font-weight: bold;
+}
+
+.menu a.active {
+    color: #f69730;
+}
+
