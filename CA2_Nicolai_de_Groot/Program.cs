@@ -17,6 +17,8 @@ namespace CA2_Nicolai_de_Groot
 
             // Frontend
             builder.Services.AddRazorPages();
+            builder.Services.AddHttpClient();
+
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>

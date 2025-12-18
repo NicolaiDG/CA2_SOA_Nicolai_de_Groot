@@ -2,7 +2,7 @@
 @model CA2_Nicolai_de_Groot.Pages.EventsModel
 
 @{
-    ViewData["Title"] = "Events";
+    ViewData["Title"] = "Event Displayer : Events";
 }
 
 <main class="content-wrapper">
@@ -14,10 +14,14 @@
         </div>
 
         <div class="projects">
-            <div class="project">
-                <h3>Event One</h3>
-                <p>Description of event one.</p>
-            </div>
+            @foreach (var ev in Model.Events)
+            {
+                <div class="project">
+                    <h3>@ev.Title</h3>
+                    <p>@ev.Description</p>
+                    <p><strong>Venue:</strong> @ev.VenueName</p>
+                </div>
+            }
         </div>
 
     </div>

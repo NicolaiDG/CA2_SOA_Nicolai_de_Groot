@@ -16,7 +16,7 @@ namespace CA2_Nicolai_de_Groot.Models
         [JsonIgnore]   
         public Venue? Venue { get; set; }
 
-        [JsonIgnore]   // Tickets bevatten Event → Event bevat Tickets → infinite loop
+        [JsonIgnore]   
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
