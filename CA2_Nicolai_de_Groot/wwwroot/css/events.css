@@ -13,6 +13,9 @@
 
 .top-header {
     padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo h1 {
@@ -23,6 +26,10 @@
 .logo em {
     color: #f69730;
     font-style: normal;
+}
+
+.authentication {
+    font-size: 16px;
 }
 
 /* MENU */
@@ -67,13 +74,18 @@
 .projects {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    gap: 20px;
 }
 
 .project {
     background: #fff;
-    padding: 35px;
+    padding: 40px;
     border: 1px solid #ddd;
+
+    height: 260px; /* 🔑 vaste hoogte */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .menu li.active a {
@@ -84,5 +96,7 @@
 .menu a.active {
     color: #f69730;
 }
+
+
 
 

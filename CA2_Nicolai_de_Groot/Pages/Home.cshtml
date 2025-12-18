@@ -5,4 +5,86 @@
     ViewData["Title"] = "Event Displayer : Home";
 }
 
-<h1>Home</h1>
+<main class="content-wrapper">
+    <div class="container">
+
+        <!-- FAVORITES -->
+        <div class="section-header">
+            <h2>Your favorite events</h2>
+        </div>
+
+        <div class="horizontal-scroll">
+            @if (!Model.FavoriteEvents.Any())
+            {
+                <div class="project fixed-width">
+                    <p>You need to login to access your favorite events.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var ev in Model.FavoriteEvents)
+                {
+                    <a href="/EventDetails/@ev.Id" class="project-link fixed-width">
+                        <div class="project">
+                            <h3>@ev.Title</h3>
+                            <p>@ev.Description</p>
+                            <p><strong>Venue:</strong> @ev.VenueName</p>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+
+        <!-- UPCOMING -->
+        <div class="section-header" style="margin-top: 60px;">
+            <h2>Upcoming events</h2>
+        </div>
+
+        <div class="projects">
+            @foreach (var ev in Model.UpcomingEvents)
+            {
+                <a href="/EventDetails/@ev.Id" class="project-link">
+                    <div class="project">
+                        <h3>@ev.Title</h3>
+                        <p>@ev.Description</p>
+                        <p><strong>Venue:</strong> @ev.VenueName</p>
+                    </div>
+                </a>
+            }
+        </div>
+
+    </div>
+</main>
+
+<style>
+
+    /* Horizontal favorites */
+    .horizontal-scroll {
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+        .horizontal-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+    /* Each card same width as Events page */
+    .fixed-width {
+        min-width: calc((1100px - 10px) / 3);
+        flex-shrink: 0;
+    }
+
+    /* Links */
+    .project-link {
+        text-decoration: none;
+        color: inherit;
+    }
+</style >
+
