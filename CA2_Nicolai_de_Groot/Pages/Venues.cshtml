@@ -16,13 +16,28 @@
         <div class="projects">
             @foreach (var venue in Model.Venues)
             {
-                <div class="project">
-                    <h3>@venue.Name</h3>
-                    <p><strong>Address:</strong> @venue.Address</p>
-                    <p><strong>Events:</strong> @venue.Events.Count</p>
-                </div>
+                <a href="/VenueEvents/@venue.Id" class="project-link">
+                    <div class="project">
+                        <h3>@venue.Name</h3>
+                        <p><strong>Address:</strong> @venue.Address</p>
+                        <p><strong>Events:</strong> @venue.Events.Count</p>
+                    </div>
+                </a>
             }
         </div>
 
     </div>
 </main>
+
+<style>
+    .project-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .project-link:hover {
+        cursor: pointer;
+        border: 1px solid #f69730;
+    }
+</style>

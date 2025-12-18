@@ -1,0 +1,32 @@
+﻿@page "/VenueEvents/{id:int}"
+@model CA2_Nicolai_de_Groot.Pages.VenueEventsModel
+
+@{
+    ViewData["Title"] = "Venue Events";
+}
+
+<main class="content-wrapper">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>@Model.Venue.Name</h2>
+            <span>@Model.Venue.Address</span>
+        </div>
+
+        <div class="projects">
+            @foreach (var ev in Model.Venue.Events)
+            {
+                <div class="project">
+                    <h3>@ev.Title</h3>
+                    <p>@ev.Description</p>
+                    <p>
+                        <strong>Date:</strong> @ev.StartTime.ToString("dd/MM/yyyy HH:mm")
+                        <br />
+                        <strong>Price:</strong> €@ev.BasePrice
+                    </p>
+                </div>
+            }
+        </div>
+
+    </div>
+</main>
