@@ -26,7 +26,7 @@ namespace CA2_Nicolai_de_Groot.Controllers
         public async Task<ActionResult<IEnumerable<Venue>>> GetVenues()
         {
             return await _context.Venues
-                .Include(v => v.Events)  // <-- Events worden mee opgehaald
+                .Include(v => v.Events)  
                 .ToListAsync();
         }
 
@@ -35,7 +35,7 @@ namespace CA2_Nicolai_de_Groot.Controllers
         public async Task<ActionResult<Venue>> GetVenue(int id)
         {
             var venue = await _context.Venues
-                .Include(v => v.Events)  // <-- Events voor één venue
+                .Include(v => v.Events)  
                 .FirstOrDefaultAsync(v => v.Id == id);
 
             if (venue == null)

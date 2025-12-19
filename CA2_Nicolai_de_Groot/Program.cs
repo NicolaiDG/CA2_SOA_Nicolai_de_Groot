@@ -65,6 +65,7 @@ app.MapGet("/login", async context =>
 
 app.MapGet("/logout", async context =>
 {
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     await context.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme,
         new AuthenticationProperties { RedirectUri = "/" });
 });
