@@ -1,61 +1,80 @@
 using CA2_Nicolai_de_Groot.Data;
-using CA2_Nicolai_de_Groot.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 
-namespace CA2_Nicolai_de_Groot
+var builder = WebApplication.CreateBuilder(args);
+
+// MVC / Razor
+builder.Services.AddControllers();
+builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+//  AUTH0 ONLY 
+builder.Services.AddAuthentication(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddOpenIdConnect(options =>
+{
+    options.Authority = "https://dev-icni8em3nqfd6f8e.us.auth0.com";
+    options.ClientId = "yZBDvnqRhLXTpWNGX4KuL0GjmpJlL9T0";
+    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
 
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+    options.ResponseType = "code";
+    options.CallbackPath = "/signin-oidc"; 
 
-            // Frontend
-            builder.Services.AddRazorPages();
-            builder.Services.AddHttpClient();
+    options.Scope.Clear();
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
 
+    options.SaveTokens = true;
+});
 
+// Database 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var app = builder.Build();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
-
-
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/api/Auth/Login";
-            });
-
-
-            var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();   
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            // Frontend
-            app.MapRazorPages();
-            app.UseStaticFiles();
-
-
-            app.Run();
-        }
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+//  AUTH ROUTES 
+app.MapGet("/login", async context =>
+{
+    await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme,
+        new AuthenticationProperties { RedirectUri = "/" });
+});
+
+app.MapGet("/logout", async context =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await context.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme,
+        new AuthenticationProperties
+        {
+            RedirectUri = "/"
+        });
+});
+
+app.MapControllers();
+app.MapRazorPages();
+
+app.Run();

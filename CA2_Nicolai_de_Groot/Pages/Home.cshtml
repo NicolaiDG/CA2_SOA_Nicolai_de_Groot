@@ -14,25 +14,15 @@
         </div>
 
         <div class="horizontal-scroll">
-            @if (!Model.FavoriteEvents.Any())
+            @if (!User.Identity.IsAuthenticated)
             {
-                <div class="project fixed-width">
-                    <p>You need to login to access your favorite events.</p>
-                </div>
+                <p>You need to login to access your favorite events.</p>
             }
             else
             {
-                @foreach (var ev in Model.FavoriteEvents)
-                {
-                    <a href="/EventDetails/@ev.Id" class="project-link fixed-width">
-                        <div class="project">
-                            <h3>@ev.Title</h3>
-                            <p>@ev.Description</p>
-                            <p><strong>Venue:</strong> @ev.VenueName</p>
-                        </div>
-                    </a>
-                }
+                <p>Welcome, @User.Identity.Name</p>
             }
+
         </div>
 
         <!-- UPCOMING -->
@@ -87,4 +77,3 @@
         color: inherit;
     }
 </style >
-

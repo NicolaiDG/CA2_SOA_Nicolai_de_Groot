@@ -9,20 +9,29 @@
         </div>
 
         <div class="authentication">
-            <a href="/Login">Login</a> | <a href="/Register">Register</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span>
+                    Hi, @User.FindFirst("name")?.Value
+                </span>
+                <span> | </span>
+                <a href="/logout">Logout</a>
+            }
+            else
+            {
+                <a href="/login">Login</a>
+            }
         </div>
     </div>
 
     <div class="main-header">
         <ul class="menu">
-            <li class="@(currentPage == "/Home" ? "active" : "")">
+            <li class="@(currentPage == "/" ? "active" : "")">
                 <a href="/">Home</a>
             </li>
-
             <li class="@(currentPage == "/Venues" ? "active" : "")">
                 <a href="/Venues">Venues</a>
             </li>
-
             <li class="@(currentPage == "/Events" ? "active" : "")">
                 <a href="/Events">Events</a>
             </li>
