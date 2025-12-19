@@ -14,14 +14,29 @@
         </div>
 
         <div class="horizontal-scroll">
-            @if (!User.Identity.IsAuthenticated)
+            @if (User.Identity?.IsAuthenticated != true)
             {
-                <p>You need to login to access your favorite events.</p>
+                <p>You need to login...</p>
+            }
+            else if (!Model.FavoriteEvents.Any())
+            {
+                <p>You have no favorite events yet.</p>
             }
             else
             {
-                <p>Welcome, @User.Identity.Name</p>
+                @foreach (var ev in Model.FavoriteEvents)
+                {
+                    <a href="/EventDetails/@ev.Id" class="project-link fixed-width">
+                        <div class="project">
+                            <h3>@ev.Title</h3>
+                            <p>@ev.Description</p>
+                            <p><strong>Venue:</strong> @ev.VenueName</p>
+                        </div>
+                    </a>
+                }
+
             }
+
 
         </div>
 

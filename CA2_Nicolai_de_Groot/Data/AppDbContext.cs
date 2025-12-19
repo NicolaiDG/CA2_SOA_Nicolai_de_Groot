@@ -19,6 +19,9 @@ namespace CA2_Nicolai_de_Groot.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
 
+        // FAVORITE
+        public DbSet<FavoriteEvent> FavoriteEvents { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +48,12 @@ namespace CA2_Nicolai_de_Groot.Data
                 .WithOne(t => t.User)
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Favorite Event
+            builder.Entity<FavoriteEvent>()
+                .HasIndex(f => new { f.Auth0UserId, f.EventId })
+                .IsUnique();
+
         }
     }
 }

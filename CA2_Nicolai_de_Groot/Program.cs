@@ -13,7 +13,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//  AUTH0 ONLY 
+// AUTH0 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
 
     options.ResponseType = "code";
-    options.CallbackPath = "/signin-oidc"; 
+    options.CallbackPath = "/signin-oidc";
 
     options.Scope.Clear();
     options.Scope.Add("openid");
@@ -37,7 +37,7 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
 });
 
-// Database 
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -51,13 +51,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-//  AUTH ROUTES 
+// AUTH ROUTES
 app.MapGet("/login", async context =>
 {
     await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme,
@@ -66,12 +65,8 @@ app.MapGet("/login", async context =>
 
 app.MapGet("/logout", async context =>
 {
-    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     await context.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme,
-        new AuthenticationProperties
-        {
-            RedirectUri = "/"
-        });
+        new AuthenticationProperties { RedirectUri = "/" });
 });
 
 app.MapControllers();

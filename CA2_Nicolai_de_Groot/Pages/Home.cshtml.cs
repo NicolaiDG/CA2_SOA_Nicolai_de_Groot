@@ -1,6 +1,8 @@
 using CA2_Nicolai_de_Groot.Models;
 using CA2_Nicolai_de_Groot.Pages.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace CA2_Nicolai_de_Groot.Pages
@@ -30,10 +32,9 @@ namespace CA2_Nicolai_de_Groot.Pages
             if (events == null || venues == null)
                 return;
 
-            // UPCOMING EVENTS (3 first by date)
             UpcomingEvents = events
-                .OrderBy(e => e.StartTime)     // ? FIX: gewoon sorteren
-                .Take(3)                       // ? FIX: altijd 3
+                .OrderBy(e => e.StartTime)
+                .Take(3)
                 .Select(e => new EventViewModel
                 {
                     Id = e.Id,
@@ -43,8 +44,38 @@ namespace CA2_Nicolai_de_Groot.Pages
                 })
                 .ToList();
 
-            // FAVORITES (later real auth — now placeholder)
-            FavoriteEvents = new List<EventViewModel>();
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                try
+                {
+                    var token = await HttpContext.GetTokenAsync("access_token");
+
+                    if (!string.IsNullOrWhiteSpace(token))
+                    {
+                        client.DefaultRequestHeaders.Authorization =
+                            new AuthenticationHeaderValue("Bearer", token);
+
+                        var favorites = await client.GetFromJsonAsync<List<Event>>(
+                            "https://localhost:7119/api/Favorites");
+
+                        if (favorites != null)
+                        {
+                            FavoriteEvents = favorites.Select(e => new EventViewModel
+                            {
+                                Id = e.Id,
+                                Title = e.Title,
+                                Description = e.Description,
+                                VenueName = venues.First(v => v.Id == e.VenueId).Name
+                            }).ToList();
+                        }
+                    }
+                }
+                catch
+                {
+                    FavoriteEvents = new List<EventViewModel>();
+                }
+            }
+
         }
     }
 }

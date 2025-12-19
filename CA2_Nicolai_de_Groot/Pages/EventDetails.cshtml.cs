@@ -1,7 +1,9 @@
 using CA2_Nicolai_de_Groot.Models;
 using CA2_Nicolai_de_Groot.Pages.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace CA2_Nicolai_de_Groot.Pages
@@ -48,5 +50,19 @@ namespace CA2_Nicolai_de_Groot.Pages
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostFavoriteAsync(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.PostAsync(
+                $"https://localhost:7119/api/Favorites/{id}",
+                null);
+
+            response.EnsureSuccessStatusCode();
+
+            return RedirectToPage(new { id });
+        }
+
     }
 }
